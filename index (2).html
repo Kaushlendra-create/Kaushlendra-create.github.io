@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaushlendra | Research Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold: #c9a84c; --gold-light: #e8cc80; --gold-dim: #8a6f32;
+      --black: #080808; --card: #111111; --border: #1e1e1e;
+      --text: #d4d4d4; --muted: #555;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--black); color:var(--text); font-family:'Inter',sans-serif; font-weight:300; overflow-x:hidden; }
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:9999; opacity:.25;
+    }
+
+    /* HERO */
+    .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:4rem 2rem; position:relative; border-bottom:1px solid var(--border); overflow:hidden; }
+    .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(201,168,76,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 30% at 15% 15%,rgba(201,168,76,.04) 0%,transparent 60%); }
+    .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(201,168,76,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,.035) 1px,transparent 1px); background-size:80px 80px; mask-image:radial-gradient(ellipse 80% 80% at center,black 0%,transparent 100%); }
+    .badge { font-family:'Space Mono',monospace; font-size:.6rem; letter-spacing:.35em; color:var(--gold); text-transform:uppercase; border:1px solid var(--gold-dim); padding:.35rem 1.1rem; margin-bottom:2.5rem; position:relative; animation:fadeDown .8s ease both; }
+    .hero-title { font-family:'Playfair Display',serif; font-size:clamp(3.2rem,9vw,6.5rem); font-weight:700; color:#fff; letter-spacing:-.02em; line-height:1.04; animation:fadeUp .9s ease .1s both; }
+    .hero-title em { display:block; font-weight:400; font-style:italic; color:var(--gold); }
+    .hero-sub { margin-top:1.5rem; font-family:'Space Mono',monospace; font-size:.7rem; color:var(--muted); letter-spacing:.18em; text-transform:uppercase; animation:fadeUp .9s ease .2s both; }
+    .hero-stats { display:flex; gap:2.5rem; margin-top:3.5rem; animation:fadeUp .9s ease .3s both; flex-wrap:wrap; justify-content:center; }
+    .hstat { text-align:center; }
+    .hstat-num { font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--gold); display:block; }
+    .hstat-lbl { font-size:.6rem; font-family:'Space Mono',monospace; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-top:.2rem; }
+    .sep { width:1px; height:44px; background:var(--border); align-self:center; }
+
+    /* LAYOUT */
+    .wrap { max-width:1100px; margin:0 auto; padding:6rem 2rem; }
+    .sec-label { font-family:'Space Mono',monospace; font-size:.58rem; letter-spacing:.4em; color:var(--gold); text-transform:uppercase; margin-bottom:.9rem; }
+    .sec-title { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem); color:#fff; font-weight:700; margin-bottom:3.5rem; }
+    .sec-divider { border-top:1px solid var(--border); }
+
+    /* CARDS */
+    .projects { display:grid; gap:2px; }
+    .card { background:var(--card); border:1px solid var(--border); padding:3rem; position:relative; overflow:hidden; transition:border-color .3s,transform .3s; }
+    .card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(to bottom,var(--gold),transparent); transform:scaleY(0); transform-origin:top; transition:transform .4s ease; }
+    .card:hover { border-color:var(--gold-dim); transform:translateX(5px); }
+    .card:hover::before { transform:scaleY(1); }
+    .card-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+    .card-idx { font-family:'Playfair Display',serif; font-size:4.5rem; color:#1a1a1a; line-height:1; font-weight:700; user-select:none; }
+    .card-type { font-family:'Space Mono',monospace; font-size:.58rem; letter-spacing:.28em; color:var(--gold); text-transform:uppercase; padding:.28rem .9rem; border:1px solid var(--gold-dim); white-space:nowrap; }
+    .card-type.pub { color:#7db87d; border-color:#3d5c3d; }
+    .card-type.platform { color:#7ab3d4; border-color:#2d4f63; }
+    .card-type.website { color:#c084fc; border-color:#6b21a8; }
+    .card-title { font-family:'Playfair Display',serif; font-size:1.45rem; color:#fff; margin-bottom:.7rem; line-height:1.3; }
+    .card-inst { font-family:'Space Mono',monospace; font-size:.65rem; color:var(--muted); letter-spacing:.08em; margin-bottom:1.5rem; }
+    .card-desc { font-size:.88rem; line-height:1.85; color:#777; margin-bottom:2rem; max-width:720px; }
+
+    /* METHODS */
+    .methods { display:flex; flex-wrap:wrap; gap:.5rem; margin-bottom:2rem; }
+    .method { font-family:'Space Mono',monospace; font-size:.58rem; letter-spacing:.08em; color:#888; padding:.32rem .85rem; border:1px solid var(--border); text-transform:uppercase; transition:border-color .2s,color .2s; }
+    .method:hover { border-color:var(--gold-dim); color:var(--gold-light); }
+
+    /* CHAPTERS */
+    .chapters { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:.5rem; margin-bottom:2rem; }
+    @media(max-width:560px) { .chapters { grid-template-columns:1fr; } }
+    .chapters li { font-size:.78rem; color:#555; padding:.55rem .8rem; border-left:2px solid #1e1e1e; transition:border-color .2s,color .2s; }
+    .chapters li:hover { border-color:var(--gold-dim); color:#999; }
+    .chapters li span { display:block; font-family:'Space Mono',monospace; font-size:.52rem; color:var(--gold-dim); letter-spacing:.18em; margin-bottom:.15rem; }
+
+    /* TABLES */
+    .rtable { width:100%; border-collapse:collapse; font-family:'Space Mono',monospace; font-size:.68rem; margin:1.5rem 0 2rem; }
+    .rtable th { color:var(--gold); letter-spacing:.15em; text-transform:uppercase; padding:.65rem 1rem; border-bottom:1px solid var(--gold-dim); text-align:left; }
+    .rtable td { padding:.58rem 1rem; border-bottom:1px solid #181818; color:#777; }
+    .rtable tr.best td { color:var(--gold-light); }
+    .rtable tr.best td:first-child::after { content:' ★'; color:var(--gold); }
+
+    .mini-table { width:100%; border-collapse:collapse; font-family:'Space Mono',monospace; font-size:.62rem; margin:1rem 0 1.5rem; }
+    .mini-table th { color:#7db87d; border-bottom:1px solid #3d5c3d; padding:.5rem .8rem; text-align:left; letter-spacing:.12em; text-transform:uppercase; }
+    .mini-table td { padding:.45rem .8rem; border-bottom:1px solid #161616; color:#666; }
+    .mini-table tr:hover td { color:#999; }
+
+    /* STAT BOXES */
+    .statbox { display:flex; flex-wrap:wrap; gap:1px; background:#181818; margin-bottom:2rem; }
+    .sbox { background:var(--card); padding:1.2rem 1.5rem; flex:1; min-width:120px; }
+    .sbox-val { font-family:'Space Mono',monospace; font-size:1rem; color:var(--gold); display:block; }
+    .sbox-key { font-size:.6rem; color:var(--muted); letter-spacing:.12em; text-transform:uppercase; margin-top:.25rem; }
+
+    /* BUTTONS */
+    .btn { display:inline-flex; align-items:center; gap:.6rem; font-family:'Space Mono',monospace; font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); border:1px solid var(--gold-dim); padding:.65rem 1.4rem; text-decoration:none; transition:background .25s,color .25s; margin-right:.8rem; margin-top:.3rem; }
+    .btn:hover { background:var(--gold); color:var(--black); }
+    .btn svg { width:11px; height:11px; flex-shrink:0; }
+    .btn.pub-btn { color:#7db87d; border-color:#3d5c3d; }
+    .btn.pub-btn:hover { background:#7db87d; color:#000; }
+    .btn.platform-btn { color:#7ab3d4; border-color:#2d4f63; }
+    .btn.platform-btn:hover { background:#7ab3d4; color:#000; }
+    .btn.web-btn { color:#c084fc; border-color:#6b21a8; }
+    .btn.web-btn:hover { background:#c084fc; color:#000; }
+    .coming { display:inline-flex; align-items:center; gap:.5rem; font-family:'Space Mono',monospace; font-size:.58rem; letter-spacing:.2em; color:#555; border:1px dashed #2a2a2a; padding:.65rem 1.4rem; text-transform:uppercase; }
+    .dot-pulse { width:6px; height:6px; border-radius:50%; background:#7ab3d4; animation:pulse 1.5s ease-in-out infinite; }
+    .dot-pulse.orange { background:#ff6b2b; }
+    @keyframes pulse { 0%,100% { opacity:.3; transform:scale(.8); } 50% { opacity:1; transform:scale(1); } }
+
+    /* RULES */
+    .grule { border:none; height:1px; background:linear-gradient(to right,transparent,var(--gold-dim),transparent); margin:2.5rem 0; }
+
+    /* SKILLS */
+    .skills-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1px; background:var(--border); }
+    .sc { background:var(--card); padding:1.5rem; }
+    .sc-name { font-family:'Space Mono',monospace; font-size:.62rem; color:var(--gold); letter-spacing:.15em; text-transform:uppercase; margin-bottom:.8rem; }
+    .track { height:1px; background:#1e1e1e; }
+    .fill { height:100%; background:linear-gradient(to right,var(--gold-dim),var(--gold)); transform-origin:left; transform:scaleX(0); animation:grow 1.3s cubic-bezier(.16,1,.3,1) .5s forwards; }
+    .sc-pct { font-family:'Playfair Display',serif; font-size:1.4rem; color:#222; margin-top:.4rem; }
+    @keyframes grow { to { transform:scaleX(1); } }
+
+    /* PROFILE */
+    .pg { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); }
+    @media(max-width:600px) { .pg { grid-template-columns:1fr; } }
+    .pc { background:var(--card); padding:1.8rem 2rem; }
+    .pc-lbl { font-family:'Space Mono',monospace; font-size:.52rem; letter-spacing:.28em; color:var(--muted); text-transform:uppercase; margin-bottom:.45rem; }
+    .pc-val { font-size:.88rem; color:var(--text); line-height:1.5; }
+    .pc-val a { color:var(--gold); text-decoration:none; }
+
+    /* FOOTER */
+    footer { border-top:1px solid var(--border); padding:3rem 2rem; text-align:center; }
+    .f-name { font-family:'Playfair Display',serif; font-size:1.6rem; color:#fff; font-style:italic; }
+    .f-sub { font-family:'Space Mono',monospace; font-size:.58rem; color:var(--muted); letter-spacing:.3em; text-transform:uppercase; margin-top:.45rem; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(22px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:translateY(0); } }
+    .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* WEBSITE PREVIEW STRIP */
+    .preview-strip { display:flex; gap:.5rem; margin:1.5rem 0 2rem; flex-wrap:wrap; }
+    .preview-tag { font-family:'Space Mono',monospace; font-size:.55rem; letter-spacing:.12em; color:#c084fc; padding:.28rem .75rem; border:1px solid #4a1a6e; text-transform:uppercase; }
+    .preview-tag.green { color:#7db87d; border-color:#3d5c3d; }
+    .preview-tag.orange { color:#ff9a5c; border-color:#7a3410; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="badge">Research & Development Portfolio</div>
+  <h1 class="hero-title">Kaushlendra<em>Academic & Applied Research</em></h1>
+  <p class="hero-sub">M.Sc. Data Science · 2024–26 · Amity University UP · A044161824028</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-num">4</span><span class="hstat-lbl">Research Papers</span></div>
+    <div class="sep"></div>
+    <div class="hstat"><span class="hstat-num">1</span><span class="hstat-lbl">Published</span></div>
+    <div class="sep"></div>
+    <div class="hstat"><span class="hstat-num">7</span><span class="hstat-lbl">ML Models</span></div>
+    <div class="sep"></div>
+    <div class="hstat"><span class="hstat-num">158</span><span class="hstat-lbl">Survey Respondents</span></div>
+    <div class="sep"></div>
+    <div class="hstat"><span class="hstat-num">2</span><span class="hstat-lbl">Live Products</span></div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<div class="wrap">
+  <p class="sec-label">Selected Work</p>
+  <h2 class="sec-title">Research Projects</h2>
+  <div class="projects">
+
+    <!-- 01 FOREX -->
+    <div class="card reveal">
+      <div class="card-top">
+        <div class="card-idx">01</div>
+        <div class="card-type">Summer Internship · STSI600</div>
+      </div>
+      <h3 class="card-title">Data-Driven Forecasting & Analysis of the EUR/USD Forex Market Using Machine Learning and Statistical Techniques</h3>
+      <p class="card-inst">Amity Institute of Applied Sciences · Supervisor: Dr. Neeraj Kumar Singh</p>
+      <p class="card-desc">A comprehensive study applying five distinct forecasting methodologies to a ten-year EUR/USD historical dataset. The research integrates classical statistical approaches with modern machine learning and deep learning to benchmark predictive accuracy. Value at Risk (VaR) is additionally incorporated to quantify downside exposure under volatile market regimes — bridging forecasting with practical risk management.</p>
+
+      <hr class="grule" />
+      <p class="sec-label" style="margin-bottom:.8rem;">Model Comparison</p>
+      <table class="rtable">
+        <thead>
+          <tr><th>Model</th><th>Type</th><th>Approach</th><th>Key Strength</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ARIMA</td><td>Statistical</td><td>ARIMA(5,1,0)</td><td>Linear trend baseline</td></tr>
+          <tr><td>Random Forest</td><td>Ensemble ML</td><td>Feature importance ranking</td><td>Noise resilience</td></tr>
+          <tr class="best"><td>SVR</td><td>Kernel ML</td><td>Non-linear kernel mapping</td><td>Best overall accuracy</td></tr>
+          <tr><td>Hybrid ARIMA+RF</td><td>Hybrid</td><td>Residual modelling</td><td>Linear + non-linear capture</td></tr>
+          <tr><td>LSTM</td><td>Deep Learning</td><td>50-epoch sequential training</td><td>Long-range dependencies</td></tr>
+        </tbody>
+      </table>
+
+      <ul class="chapters">
+        <li><span>Ch. 1</span>Introduction & Forex Market Background</li>
+        <li><span>Ch. 2</span>Literature Review</li>
+        <li><span>Ch. 3</span>Exploratory Data Analysis (EDA)</li>
+        <li><span>Ch. 4</span>Model Implementation & Forecasting</li>
+        <li><span>Ch. 5</span>Results & Discussion</li>
+        <li><span>Ch. 6</span>Conclusion & Future Scope</li>
+      </ul>
+
+      <div class="methods">
+        <span class="method">ARIMA</span><span class="method">LSTM</span><span class="method">SVR</span>
+        <span class="method">Random Forest</span><span class="method">AutoML</span>
+        <span class="method">Value at Risk</span><span class="method">EUR/USD</span>
+        <span class="method">Time Series</span><span class="method">Python</span>
+        <span class="method">TensorFlow</span><span class="method">Scikit-Learn</span>
+        <span class="method">Walk-Forward Validation</span>
+      </div>
+
+      <a class="btn" href="Data-Driven%20Forecasting%20and%20Analysis%20of%20the%20EURUSD%20Forex%20Market%20using%20Statistical%20and%20Machine%20learning%20(1).pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download Report
+      </a>
+    </div>
+
+    <!-- 02 SOCIAL MEDIA -->
+    <div class="card reveal" style="transition-delay:.12s">
+      <div class="card-top">
+        <div class="card-idx">02</div>
+        <div class="card-type">NTCC · UG Short Internship</div>
+      </div>
+      <h3 class="card-title">Impact of Social Media Exposure on Academic Performance</h3>
+      <p class="card-inst">Amity School of Applied Sciences, Lucknow · Supervisor: Dr. Shailja Pandey</p>
+      <p class="card-desc">A quantitative survey-based study examining how social media consumption patterns correlate with academic outcomes across 158 respondents from diverse age groups and educational levels. Hypothesis testing via Chi-Square Goodness of Fit and Test of Independence provided statistically rigorous conclusions. Key finding: YouTube is the most educationally impactful platform, and social media enhances faculty-student communication without significantly improving academic performance.</p>
+
+      <div class="statbox">
+        <div class="sbox"><span class="sbox-val">158</span><span class="sbox-key">Respondents</span></div>
+        <div class="sbox"><span class="sbox-val">X² = 2.31</span><span class="sbox-key">Chi-Sq GoF</span></div>
+        <div class="sbox"><span class="sbox-val">X² = 19.86</span><span class="sbox-key">Chi-Sq Independence</span></div>
+        <div class="sbox"><span class="sbox-val">57.6% ♂</span><span class="sbox-key">Gender Split</span></div>
+        <div class="sbox"><span class="sbox-val">37.3%</span><span class="sbox-key">YouTube Usage</span></div>
+      </div>
+
+      <ul class="chapters">
+        <li><span>Ch. 1</span>Introduction & Evolution of Social Media</li>
+        <li><span>Ch. 2</span>Data Collection & Methodology</li>
+        <li><span>Ch. 3</span>Results & Discussion (R1–R5)</li>
+        <li><span>Ch. 4</span>Chi-Square Concept & Calculation</li>
+        <li><span>Conclusion</span>Findings & Recommendations</li>
+        <li><span>Appendix</span>Distribution Tables & Raw Data</li>
+      </ul>
+
+      <div class="methods">
+        <span class="method">Chi-Square Test</span><span class="method">Survey Research</span>
+        <span class="method">Descriptive Statistics</span><span class="method">Hypothesis Testing</span>
+        <span class="method">Google Forms</span><span class="method">Educational Research</span>
+      </div>
+
+      <a class="btn" href="Impact%20of%20Social%20Media%20Exposure%20on%20Academic%20Perfomance.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download Report
+      </a>
+    </div>
+
+    <!-- 03 IMR PUBLICATION -->
+    <div class="card reveal" style="transition-delay:.24s; border-color:#1e2e1e;">
+      <div class="card-top">
+        <div class="card-idx" style="color:#1e2e1e;">03</div>
+        <div class="card-type pub">Published · Book Chapter</div>
+      </div>
+      <h3 class="card-title" style="color:#c8e6c8;">Statistical Analysis of Infant Mortality Rate in India &amp; Uttar Pradesh</h3>
+      <p class="card-inst">
+        Published in: <em style="color:#5a8a5a;">Advanced Statistical and Computational Techniques in Interdisciplinary Research</em><br>
+        Co-author: Gunjan Singh (Asst. Professor) · Amity School of Applied Sciences, Lucknow
+      </p>
+      <p class="card-desc">A published research chapter providing a comprehensive multi-level statistical analysis of India's Infant Mortality Rate (IMR) from 2007–2023, with a focused investigation into Uttar Pradesh and its 19 sub-centers (2011–12). Combines Pareto Analysis, regression modelling, scatter plots, box plots, and standard deviation analysis to identify causes, regional disparities, and future projections — equipping policymakers with evidence-backed intervention strategies.</p>
+
+      <div class="statbox" style="border:1px solid #3d5c3d;">
+        <div class="sbox"><span class="sbox-val" style="color:#7db87d;">52 → 27</span><span class="sbox-key">India IMR (2007–23)</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#7db87d;">69 → 38</span><span class="sbox-key">UP IMR (2007–20)</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#7db87d;">−1.43/yr</span><span class="sbox-key">India Decline Rate</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#7db87d;">−2.42/yr</span><span class="sbox-key">UP Decline Rate</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#7db87d;">R² = 0.855</span><span class="sbox-key">Regression Fit</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#7db87d;">19</span><span class="sbox-key">Sub-Centers</span></div>
+      </div>
+
+      <p class="sec-label" style="margin-bottom:.8rem; color:#7db87d;">UP Sub-Center Data (2011–12) · IMR = 8.4 per 1,000 live births</p>
+      <table class="mini-table">
+        <thead><tr><th>Sub-Center</th><th>Live Births</th><th>Infant Deaths</th><th>Relative IMR</th></tr></thead>
+        <tbody>
+          <tr><td>Pratapgarh</td><td>994</td><td>1</td><td>Lowest ↓</td></tr>
+          <tr><td>Jhansi / Kanpur</td><td>885 / 862</td><td>6 each</td><td>Low</td></tr>
+          <tr><td>Agra / Fatehpur / Lucknow</td><td>902 / 907 / 906</td><td>7 each</td><td>Moderate</td></tr>
+          <tr><td>Balrampur / Mainpuri</td><td>927 / 881</td><td>10 each</td><td>Highest ↑</td></tr>
+          <tr><td style="color:#3a5a3a;" colspan="3">→ Full 19-subcenter dataset in PDF</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <hr class="grule" style="background:linear-gradient(to right,transparent,#3d5c3d,transparent);" />
+
+      <ul class="chapters">
+        <li><span>Analysis 1</span>Pareto Analysis — 80-20 rule on 9 causes of infant mortality</li>
+        <li><span>Analysis 2</span>Regression — India & UP trend lines (R² = 0.855)</li>
+        <li><span>Analysis 3</span>Scatter Plot — IMR correlation between India and UP</li>
+        <li><span>Analysis 4</span>Box Plot — IQR, quartile & outlier analysis for sub-centers</li>
+        <li><span>Analysis 5</span>Histogram — Live births & infant deaths distribution</li>
+        <li><span>Analysis 6</span>Standard Deviation — σ = 36.51 (births), σ = 1.90 (deaths)</li>
+      </ul>
+
+      <div class="methods">
+        <span class="method">Regression Analysis</span><span class="method">Pareto Analysis</span>
+        <span class="method">Box Plot</span><span class="method">Scatter Plot</span>
+        <span class="method">Standard Deviation</span><span class="method">IQR Analysis</span>
+        <span class="method">Public Health Data</span><span class="method">Python</span>
+        <span class="method">Matplotlib</span><span class="method">Policy Research</span>
+      </div>
+
+      <a class="btn pub-btn" href="Statistical%20Analysis%20on%20Infant%20Mortality%20Rate.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download Publication
+      </a>
+    </div>
+
+    <!-- 04 BOX OFFICE — NEW -->
+    <div class="card reveal" style="transition-delay:.30s;">
+      <div class="card-top">
+        <div class="card-idx">04</div>
+        <div class="card-type">NTCC · UG Project</div>
+      </div>
+      <h3 class="card-title">Predicting Box Office Success of Movies Using Machine Learning</h3>
+      <p class="card-inst">Amity School of Applied Sciences, Lucknow · Supervisor: Dr. Gunjan Singh · Head: Dr. Asita Kulshreshtha</p>
+      <p class="card-desc">A rigorous machine learning study using the IMDb Top 1000 Movies dataset to forecast box office revenue. Linear Regression and Random Forest Regressor were applied to features including runtime, user rating, vote count, and Metascore. Factor analysis identified audience preferences and directorial impact as dominant contributors to box office performance. The study benchmarks model accuracy via MSE and R², exposing the non-linear complexity of revenue forecasting in the entertainment industry.</p>
+
+      <hr class="grule" />
+      <p class="sec-label" style="margin-bottom:.8rem;">Model Performance Comparison</p>
+      <table class="rtable">
+        <thead>
+          <tr><th>Model</th><th>MSE</th><th>R² Score</th><th>Verdict</th></tr>
+        </thead>
+        <tbody>
+          <tr class="best"><td>Linear Regression</td><td>4,647.74</td><td>0.50</td><td>Better fit — recommended</td></tr>
+          <tr><td>Random Forest</td><td>6,786.99</td><td>0.27</td><td>Underfit on high-grossers</td></tr>
+        </tbody>
+      </table>
+
+      <ul class="chapters">
+        <li><span>Ch. 1</span>Introduction — IMDb dataset & research objectives</li>
+        <li><span>Ch. 2</span>Background — Statistical & ML framework</li>
+        <li><span>Ch. 3</span>Data Collection & Pre-processing (EDA)</li>
+        <li><span>Ch. 4</span>Factor Analysis — Genre, director, rating trends</li>
+        <li><span>Ch. 5</span>Model Selection — Linear Regression vs Random Forest</li>
+        <li><span>Ch. 6</span>Results & Discussion</li>
+      </ul>
+
+      <div class="statbox">
+        <div class="sbox"><span class="sbox-val">1,000</span><span class="sbox-key">IMDb Movies</span></div>
+        <div class="sbox"><span class="sbox-val">12</span><span class="sbox-key">Features</span></div>
+        <div class="sbox"><span class="sbox-val">R² = 0.50</span><span class="sbox-key">Best Model Fit</span></div>
+        <div class="sbox"><span class="sbox-val">Drama</span><span class="sbox-key">Top Genre (513)</span></div>
+        <div class="sbox"><span class="sbox-val">$936M</span><span class="sbox-key">Peak Revenue</span></div>
+      </div>
+
+      <div class="methods">
+        <span class="method">Linear Regression</span><span class="method">Random Forest</span>
+        <span class="method">Factor Analysis</span><span class="method">EDA</span>
+        <span class="method">IMDb Dataset</span><span class="method">Python</span>
+        <span class="method">Pandas</span><span class="method">Scikit-Learn</span>
+        <span class="method">Seaborn</span><span class="method">Matplotlib</span>
+        <span class="method">MSE / R²</span><span class="method">Genre Analysis</span>
+      </div>
+
+      <a class="btn" href="Predicting_Box_office_sucess_of_movies.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download Report
+      </a>
+    </div>
+
+    <!-- 05 BACKFORGE PLATFORM -->
+    <div class="card reveal" style="transition-delay:.42s; border-color:#1e2a38;">
+      <div class="card-top">
+        <div class="card-idx" style="color:#1a2535;">05</div>
+        <div class="card-type platform">Product · In Development</div>
+      </div>
+      <h3 class="card-title" style="color:#4a7a9b;">BackForge / K-Quant Platform</h3>
+      <p class="card-inst" style="color:#2d4f63;">Algorithmic Trading · No-Code Strategy Builder · Launching Soon</p>
+      <p class="card-desc" style="color:#3a5570;">A no-code algorithmic trading platform enabling retail traders to backtest, validate, and deploy quantitative strategies without writing code. Built on the EMA 9/15 Scalping System developed and validated for XAUUSD M5, featuring walk-forward validation, Monte Carlo simulation, ATR-based risk management, and session filtering.<br><br><em style="color:#2d4f63;">Full project details, screenshots, and demo link will be added upon launch.</em></p>
+
+      <div class="methods">
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">EMA Strategy</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">XAUUSD M5</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">Backtesting Engine</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">Monte Carlo</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">Walk-Forward Validation</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">ATR Risk Management</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">Python</span>
+        <span class="method" style="color:#2d4f63;border-color:#1e3040;">No-Code SaaS</span>
+      </div>
+
+      <div class="coming"><span class="dot-pulse"></span>Project page updating soon — check back after launch</div>
+    </div>
+
+    <!-- 06 BACKFORGE WEBSITE — NEW -->
+    <div class="card reveal" style="transition-delay:.54s; border-color:#2a1a3e;">
+      <div class="card-top">
+        <div class="card-idx" style="color:#2a1a3e;">06</div>
+        <div class="card-type website">Own Website · Built From Scratch</div>
+      </div>
+      <h3 class="card-title" style="color:#e2b8ff;">BackForge — Live Trading Strategy Website</h3>
+      <p class="card-inst" style="color:#6b3fa0;">Full-Stack Frontend · Pure HTML / CSS / JS · Live Product</p>
+      <p class="card-desc" style="color:#5a3a70;">A complete professional trading platform website designed and built independently from scratch using pure HTML, CSS, and JavaScript — no frameworks, no templates. Features a live ticker tape with real asset symbols, animated hero section, interactive pricing cards, a full feature showcase, animated FAQ accordion, testimonials carousel, and a responsive nav. The design follows a dark-mode financial aesthetic with a custom orange forge palette, Geist Mono typography, and micro-animations throughout. Deployed as a fully self-contained product landing page for the BackForge algorithmic trading platform.</p>
+
+      <div class="preview-strip">
+        <span class="preview-tag">Live Ticker Tape</span>
+        <span class="preview-tag">Animated Hero</span>
+        <span class="preview-tag orange">Dark Financial UI</span>
+        <span class="preview-tag">Pricing Cards</span>
+        <span class="preview-tag">FAQ Accordion</span>
+        <span class="preview-tag green">Responsive Design</span>
+        <span class="preview-tag">CSS Animations</span>
+        <span class="preview-tag">No Framework</span>
+      </div>
+
+      <div class="statbox" style="border:1px solid #3a1a5e;">
+        <div class="sbox"><span class="sbox-val" style="color:#c084fc;">HTML/CSS/JS</span><span class="sbox-key">Stack</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#c084fc;">0</span><span class="sbox-key">Frameworks Used</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#c084fc;">Mobile Ready</span><span class="sbox-key">Responsive</span></div>
+        <div class="sbox"><span class="sbox-val" style="color:#c084fc;">Self-Built</span><span class="sbox-key">No Templates</span></div>
+      </div>
+
+      <div class="methods">
+        <span class="method">HTML5</span><span class="method">CSS3</span>
+        <span class="method">Vanilla JavaScript</span><span class="method">CSS Animations</span>
+        <span class="method">Responsive Design</span><span class="method">Dark UI</span>
+        <span class="method">Geist Mono</span><span class="method">Cabinet Grotesk</span>
+        <span class="method">Financial Design</span><span class="method">Product Landing Page</span>
+      </div>
+
+      <a class="btn web-btn" href="backforge.html" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        View Live Website
+      </a>
+      <a class="btn" href="backforge.html" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Download Source
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="sec-divider">
+<div class="wrap">
+  <p class="sec-label">Technical Proficiency</p>
+  <h2 class="sec-title">Skills & Tools</h2>
+  <div class="skills-grid reveal">
+    <div class="sc"><div class="sc-name">Python</div><div class="track"><div class="fill" style="width:93%"></div></div><div class="sc-pct">93</div></div>
+    <div class="sc"><div class="sc-name">Machine Learning</div><div class="track"><div class="fill" style="width:86%"></div></div><div class="sc-pct">86</div></div>
+    <div class="sc"><div class="sc-name">Time Series Analysis</div><div class="track"><div class="fill" style="width:88%"></div></div><div class="sc-pct">88</div></div>
+    <div class="sc"><div class="sc-name">Deep Learning (LSTM)</div><div class="track"><div class="fill" style="width:75%"></div></div><div class="sc-pct">75</div></div>
+    <div class="sc"><div class="sc-name">Statistical Testing</div><div class="track"><div class="fill" style="width:84%"></div></div><div class="sc-pct">84</div></div>
+    <div class="sc"><div class="sc-name">Data Visualisation</div><div class="track"><div class="fill" style="width:82%"></div></div><div class="sc-pct">82</div></div>
+    <div class="sc"><div class="sc-name">Scikit-Learn</div><div class="track"><div class="fill" style="width:87%"></div></div><div class="sc-pct">87</div></div>
+    <div class="sc"><div class="sc-name">Quantitative Finance</div><div class="track"><div class="fill" style="width:80%"></div></div><div class="sc-pct">80</div></div>
+    <div class="sc"><div class="sc-name">HTML / CSS / JS</div><div class="track"><div class="fill" style="width:78%"></div></div><div class="sc-pct">78</div></div>
+    <div class="sc"><div class="sc-name">Frontend Design</div><div class="track"><div class="fill" style="width:72%"></div></div><div class="sc-pct">72</div></div>
+  </div>
+</div>
+</div>
+
+<!-- PROFILE -->
+<div class="sec-divider">
+<div class="wrap">
+  <p class="sec-label">About</p>
+  <h2 class="sec-title">Profile</h2>
+  <div class="pg reveal">
+    <div class="pc"><div class="pc-lbl">Full Name</div><div class="pc-val">Kaushlendra (Kaush)</div></div>
+    <div class="pc"><div class="pc-lbl">Enrollment Number</div><div class="pc-val">A044161824028</div></div>
+    <div class="pc"><div class="pc-lbl">Program</div><div class="pc-val">M.Sc. Data Science (2024–26)</div></div>
+    <div class="pc"><div class="pc-lbl">Institution</div><div class="pc-val">Amity Institute of Applied Sciences, Amity University UP, Noida</div></div>
+    <div class="pc"><div class="pc-lbl">Research Supervisor</div><div class="pc-val">Dr. Neeraj Kumar Singh</div></div>
+    <div class="pc"><div class="pc-lbl">Publication Co-author</div><div class="pc-val">Gunjan Singh (Asst. Professor)</div></div>
+    <div class="pc"><div class="pc-lbl">GitHub</div><div class="pc-val"><a href="https://github.com/Kaushlendra-create" target="_blank">github.com/Kaushlendra-create</a></div></div>
+    <div class="pc"><div class="pc-lbl">Fiverr (K-Quant)</div><div class="pc-val"><a href="https://www.fiverr.com/kaushlendra1631" target="_blank">fiverr.com/kaushlendra1631</a></div></div>
+    <div class="pc"><div class="pc-lbl">Specialisation</div><div class="pc-val">Quantitative Finance · ML Forecasting · Strategy Backtesting · Statistical Analysis · Frontend Development</div></div>
+    <div class="pc"><div class="pc-lbl">Current Ventures</div><div class="pc-val">K-Quant · BackForge Platform · AcademIQ Services</div></div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-name">Kaushlendra</div>
+  <p class="f-sub">M.Sc. Data Science · Amity University UP · 2024–26</p>
+  <p style="margin-top:1.8rem;font-family:'Space Mono',monospace;font-size:.52rem;color:#222;letter-spacing:.2em;">© 2025 · ALL RESEARCH IS ORIGINAL WORK SUBMITTED TO AMITY UNIVERSITY UTTAR PRADESH</p>
+</footer>
+
+<script>
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold:.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

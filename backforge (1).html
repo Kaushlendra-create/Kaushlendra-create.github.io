@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backforge — Forge Your Trading Strategy</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7807803184170568" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cabinet+Grotesk:wght@400;500;700;800;900&family=Geist+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root {
+  --bg:       #05070a;
+  --bg2:      #090d12;
+  --bg3:      #0e1420;
+  --bg4:      #131c28;
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(255,255,255,0.10);
+  --border3:  rgba(255,255,255,0.16);
+  --forge:    #ff6b2b;
+  --forge2:   #ff9a5c;
+  --forge3:   rgba(255,107,43,0.12);
+  --ice:      #00d4ff;
+  --ice2:     rgba(0,212,255,0.08);
+  --gold:     #f0c040;
+  --green:    #00e5a0;
+  --text:     #eef1f5;
+  --muted:    #64748b;
+  --muted2:   #334155;
+  --font-d:   'Cabinet Grotesk', sans-serif;
+  --font-b:   'Cabinet Grotesk', sans-serif;
+  --font-m:   'Geist Mono', monospace;
+  --font-s:   'Lora', serif;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font-b); overflow-x: hidden; line-height: 1.6; }
+::-webkit-scrollbar { width: 3px; } ::-webkit-scrollbar-thumb { background: var(--muted2); }
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 48px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(5,7,10,0.88); backdrop-filter: blur(24px);
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-d); font-size: 20px; font-weight: 900;
+  letter-spacing: -0.5px;
+}
+.logo-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--forge);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.logo span { color: var(--forge); }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color .2s; }
+.nav-links a:hover { color: var(--text); }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-login { color: var(--muted); font-size: 13px; font-weight: 500; cursor: pointer; transition: color .2s; background: none; border: none; }
+.nav-login:hover { color: var(--text); }
+.nav-cta { background: var(--forge); color: #fff; border: none; padding: 9px 22px; border-radius: 8px; font-family: var(--font-b); font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.nav-cta:hover { background: var(--forge2); transform: translateY(-1px); }
+
+/* ── TICKER ── */
+.ticker { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 8px 0; overflow: hidden; white-space: nowrap; margin-top: 65px; }
+.ticker-inner { display: inline-flex; gap: 40px; animation: tick 25s linear infinite; }
+@keyframes tick { to { transform: translateX(-50%); } }
+.ti { font-family: var(--font-m); font-size: 11px; display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.ti .sym { color: var(--text); font-weight: 500; }
+.ti .up { color: var(--green); } .ti .dn { color: #f87171; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 92vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 80px 24px 60px; text-align: center; position: relative; overflow: hidden;
+}
+.hero-noise {
+  position: absolute; inset: 0; opacity: .025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+.hero-lines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 0%, transparent 100%);
+}
+.forge-glow {
+  position: absolute; width: 700px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,107,43,0.07) 0%, transparent 70%);
+  top: 40%; left: 50%; transform: translate(-50%,-50%); pointer-events: none;
+}
+.ice-glow {
+  position: absolute; width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.04) 0%, transparent 70%);
+  bottom: 0; right: 10%; pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--font-m); font-size: 11px; letter-spacing: 1.5px; color: var(--forge);
+  background: rgba(255,107,43,0.08); border: 1px solid rgba(255,107,43,0.2);
+  padding: 6px 16px; border-radius: 100px; margin-bottom: 32px;
+  animation: fadeUp .6s .1s both;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--forge); animation: blink 2s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+h1 {
+  font-family: var(--font-d); font-size: clamp(52px, 8vw, 100px);
+  font-weight: 900; letter-spacing: -3px; line-height: .95;
+  margin-bottom: 28px; animation: fadeUp .7s .2s both;
+}
+h1 em { font-style: normal; color: var(--forge); position: relative; }
+h1 em::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 3px;
+  background: var(--forge); border-radius: 2px; opacity: .5;
+}
+.hero-sub {
+  font-size: 18px; color: var(--muted); max-width: 560px; line-height: 1.7;
+  margin-bottom: 44px; animation: fadeUp .6s .35s both;
+  font-family: var(--font-s); font-style: italic;
+}
+.hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; animation: fadeUp .6s .5s both; }
+.btn-forge {
+  background: var(--forge); color: #fff; border: none;
+  padding: 15px 36px; border-radius: 10px; font-family: var(--font-b);
+  font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.btn-forge:hover { background: var(--forge2); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,107,43,0.3); }
+.btn-ghost {
+  background: transparent; color: var(--text); border: 1px solid var(--border3);
+  padding: 15px 36px; border-radius: 10px; font-family: var(--font-b);
+  font-size: 15px; font-weight: 500; cursor: pointer; transition: all .2s;
+}
+.btn-ghost:hover { border-color: var(--forge); color: var(--forge); }
+.hero-stats {
+  display: flex; gap: 56px; margin-top: 72px; padding-top: 48px;
+  border-top: 1px solid var(--border); flex-wrap: wrap; justify-content: center;
+  animation: fadeUp .6s .65s both;
+}
+.stat { text-align: center; }
+.stat-n { font-family: var(--font-d); font-size: 40px; font-weight: 900; letter-spacing: -1.5px; color: var(--forge); }
+.stat-l { font-size: 12px; color: var(--muted); font-family: var(--font-m); letter-spacing: .5px; margin-top: 4px; }
+
+/* ── BUILDER ── */
+.builder-section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+.s-tag { font-family: var(--font-m); font-size: 11px; color: var(--forge); letter-spacing: 1.5px; margin-bottom: 14px; display: block; }
+.s-title { font-family: var(--font-d); font-size: clamp(32px, 5vw, 56px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; margin-bottom: 14px; }
+.s-sub { color: var(--muted); font-size: 16px; max-width: 480px; margin-bottom: 52px; line-height: 1.7; }
+
+.forge-panel {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 0 0 1px rgba(255,107,43,0.05), 0 40px 80px rgba(0,0,0,0.4);
+}
+.panel-topbar {
+  background: var(--bg3); border-bottom: 1px solid var(--border);
+  padding: 14px 22px; display: flex; align-items: center; gap: 10px;
+}
+.wdot { width: 10px; height: 10px; border-radius: 50%; }
+.panel-name { font-family: var(--font-m); font-size: 11px; color: var(--muted); margin-left: 10px; }
+.panel-badge { margin-left: auto; font-family: var(--font-m); font-size: 10px; background: rgba(0,229,160,0.1); color: var(--green); border: 1px solid rgba(0,229,160,0.2); padding: 3px 10px; border-radius: 4px; }
+.panel-body { display: grid; grid-template-columns: 1fr 1fr; }
+.panel-left { padding: 28px; border-right: 1px solid var(--border); }
+.panel-right { padding: 28px; }
+.inp-label { font-family: var(--font-m); font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 8px; display: block; }
+.strat-area {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 10px; padding: 14px 16px; color: var(--text);
+  font-family: var(--font-b); font-size: 14px; resize: none; min-height: 86px;
+  margin-bottom: 16px; transition: border-color .2s; line-height: 1.6;
+}
+.strat-area:focus { outline: none; border-color: var(--forge); }
+.strat-area::placeholder { color: var(--muted2); }
+.sel-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.sel {
+  background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px;
+  padding: 10px 12px; color: var(--text); font-family: var(--font-b); font-size: 13px;
+  appearance: none; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px;
+}
+.sel:focus { outline: none; border-color: var(--forge); }
+.forge-btn {
+  width: 100%; background: var(--forge); color: #fff; border: none;
+  border-radius: 10px; padding: 14px; font-family: var(--font-b);
+  font-size: 14px; font-weight: 700; cursor: pointer; transition: all .2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.forge-btn:hover { background: var(--forge2); }
+.progress { height: 2px; background: var(--border); border-radius: 1px; margin-top: 10px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--forge), var(--ice)); width: 0%; transition: width .1s linear; border-radius: 1px; }
+.tf-btn {
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--muted);
+  border-radius: 6px; padding: 7px 4px; font-family: var(--font-m); font-size: 11px;
+  cursor: pointer; transition: all .15s; text-align: center;
+}
+.tf-btn:hover { border-color: var(--forge); color: var(--forge); }
+.tf-btn.active-tf { background: rgba(255,107,43,.12); border-color: var(--forge); color: var(--forge); font-weight: 600; }
+.cap-preset {
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--muted);
+  border-radius: 6px; padding: 5px 10px; font-family: var(--font-m); font-size: 10px;
+  cursor: pointer; transition: all .15s;
+}
+.cap-preset:hover { border-color: var(--forge); color: var(--forge); }
+.sym-item {
+  padding: 9px 12px; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border); transition: background .1s;
+}
+.sym-item:hover { background: rgba(255,107,43,.06); }
+.sym-item:last-child { border-bottom: none; }
+.sym-cat { font-family: var(--font-m); font-size: 10px; color: var(--muted); }
+input[type=number]::-webkit-inner-spin-button { opacity: 0; }
+input[type=number]:focus { outline: none; border-color: var(--forge) !important; }
+.code-out {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 14px 16px; margin-top: 14px;
+  font-family: var(--font-m); font-size: 11px; line-height: 1.7;
+  color: var(--muted); overflow-x: auto;
+}
+.kw { color: var(--ice); } .str { color: var(--green); } .cm { color: var(--muted2); } .fn { color: var(--forge2); }
+
+/* Results */
+.metrics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.met {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+}
+.met-l { font-family: var(--font-m); font-size: 9px; color: var(--muted); letter-spacing: .5px; margin-bottom: 6px; }
+.met-v { font-family: var(--font-d); font-size: 24px; font-weight: 900; letter-spacing: -1px; }
+.met-v.up { color: var(--green); } .met-v.dn { color: #f87171; } .met-v.nt { color: var(--ice); }
+.chart-box { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 14px; height: 120px; }
+.chart-lbl { font-family: var(--font-m); font-size: 9px; color: var(--muted); margin-bottom: 6px; letter-spacing: .5px; }
+canvas#miniChart { width: 100%; height: 85px; }
+.result-actions { display: flex; gap: 8px; margin-top: 12px; }
+.ra-btn {
+  flex: 1; padding: 10px; border-radius: 8px; font-family: var(--font-b);
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all .2s; text-align: center;
+}
+.ra-primary { background: var(--forge); color: #fff; border: none; }
+.ra-primary:hover { background: var(--forge2); }
+.ra-sec { background: transparent; color: var(--muted); border: 1px solid var(--border2); }
+.ra-sec:hover { border-color: var(--forge); color: var(--forge); }
+.api-status { display: none; margin-top: 10px; padding: 9px 12px; border-radius: 8px; font-family: var(--font-m); font-size: 11px; }
+.st-ok { background: rgba(0,229,160,.06); border: 1px solid rgba(0,229,160,.15); color: var(--green); }
+.st-err { background: rgba(248,113,113,.06); border: 1px solid rgba(248,113,113,.15); color: #f87171; }
+.st-info { background: rgba(0,212,255,.06); border: 1px solid rgba(0,212,255,.15); color: var(--ice); }
+
+/* ── MODELS ── */
+.models-section { padding: 100px 24px; background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.models-inner { max-width: 1200px; margin: 0 auto; }
+.models-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 52px; flex-wrap: wrap; gap: 20px; }
+.models-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.model-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 16px; padding: 26px; cursor: pointer;
+  transition: all .25s; position: relative; overflow: hidden;
+}
+.model-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--forge), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.model-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+.model-card:hover::before { opacity: 1; }
+.mc-badge {
+  position: absolute; top: 14px; right: 14px;
+  font-family: var(--font-m); font-size: 9px; padding: 3px 8px; border-radius: 4px;
+}
+.mc-badge.free { background: rgba(0,229,160,.1); color: var(--green); border: 1px solid rgba(0,229,160,.2); }
+.mc-badge.pro { background: rgba(255,107,43,.1); color: var(--forge); border: 1px solid rgba(255,107,43,.2); }
+.mc-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 16px; }
+.mc-name { font-family: var(--font-d); font-size: 17px; font-weight: 800; margin-bottom: 8px; letter-spacing: -.3px; }
+.mc-desc { font-size: 13px; color: var(--muted); line-height: 1.65; margin-bottom: 14px; }
+.mc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.mc-tag { font-family: var(--font-m); font-size: 10px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 3px 8px; color: var(--muted); }
+.qm-apply { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 14px; }
+.qm-btn {
+  background: var(--bg3); border: 1px solid var(--border2); color: var(--muted);
+  border-radius: 6px; padding: 9px 10px; font-family: var(--font-b); font-size: 12px;
+  font-weight: 500; cursor: pointer; transition: all .2s; text-align: left;
+}
+.qm-btn:hover { border-color: var(--forge); color: var(--forge); }
+.qm-btn.active { border-color: var(--forge); color: var(--forge); background: rgba(255,107,43,.05); }
+.model-result { display: none; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 14px; font-size: 12px; margin-top: 10px; }
+
+/* ── HOW IT WORKS ── */
+.how-section { padding: 100px 24px; max-width: 1200px; margin: 0 auto; }
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 52px; }
+.step { padding: 40px 36px; border-right: 1px solid var(--border); }
+.step:last-child { border-right: none; }
+.step-n { font-family: var(--font-m); font-size: 10px; color: var(--muted2); letter-spacing: 1px; margin-bottom: 20px; }
+.step-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--bg3); border: 1px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px; }
+.step-t { font-family: var(--font-d); font-size: 22px; font-weight: 800; letter-spacing: -.5px; margin-bottom: 12px; }
+.step-d { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── VS SECTION ── */
+.vs-section { padding: 100px 24px; background: var(--bg2); border-top: 1px solid var(--border); }
+.vs-inner { max-width: 900px; margin: 0 auto; }
+.vs-table { width: 100%; border-collapse: collapse; margin-top: 52px; }
+.vs-table th { padding: 14px 20px; font-family: var(--font-m); font-size: 11px; letter-spacing: .5px; color: var(--muted); text-align: left; border-bottom: 1px solid var(--border); }
+.vs-table th.ours { color: var(--forge); }
+.vs-table td { padding: 14px 20px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); }
+.vs-table td.feat { color: var(--muted); font-family: var(--font-m); font-size: 11px; letter-spacing: .3px; }
+.vs-table td.yes { color: var(--green); font-weight: 600; }
+.vs-table td.no { color: var(--muted2); }
+.vs-table tr:hover td { background: rgba(255,107,43,.02); }
+.vs-table .ours-col { background: rgba(255,107,43,.03); }
+
+/* ── PRICING ── */
+.pricing-section { padding: 100px 24px; max-width: 1000px; margin: 0 auto; text-align: center; }
+.plans { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 52px; text-align: left; }
+.plan { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 30px; transition: all .25s; }
+.plan.feat { border-color: var(--forge); background: linear-gradient(160deg, rgba(255,107,43,.04), var(--bg2)); position: relative; }
+.plan-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--forge); color: #fff; font-family: var(--font-m); font-size: 10px; padding: 4px 14px; border-radius: 100px; white-space: nowrap; }
+.plan-tier { font-family: var(--font-m); font-size: 10px; color: var(--muted); letter-spacing: 1px; margin-bottom: 14px; }
+.plan-price { font-family: var(--font-d); font-size: 44px; font-weight: 900; letter-spacing: -2px; margin-bottom: 4px; }
+.plan-price sub { font-size: 14px; color: var(--muted); font-weight: 400; letter-spacing: 0; }
+.plan-note { font-size: 12px; color: var(--muted); margin-bottom: 26px; }
+.plan-feats { list-style: none; display: flex; flex-direction: column; gap: 11px; margin-bottom: 26px; }
+.plan-feats li { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 9px; }
+.plan-feats li::before { content: '✓'; color: var(--forge); font-weight: 700; font-size: 12px; flex-shrink: 0; }
+.plan-feats li.off::before { content: '—'; color: var(--muted2); }
+.plan-feats li.off { color: var(--muted2); }
+.plan-btn { width: 100%; padding: 12px; border-radius: 8px; font-family: var(--font-b); font-size: 13px; font-weight: 700; cursor: pointer; transition: all .2s; }
+.plan-btn.out { background: transparent; border: 1px solid var(--border2); color: var(--text); }
+.plan-btn.out:hover { border-color: var(--forge); color: var(--forge); }
+.plan-btn.fill { background: var(--forge); border: none; color: #fff; }
+.plan-btn.fill:hover { background: var(--forge2); }
+
+/* ── CTA ── */
+.cta-section { padding: 120px 24px; text-align: center; border-top: 1px solid var(--border); background: var(--bg2); position: relative; overflow: hidden; }
+.cta-glow { position: absolute; width: 600px; height: 300px; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,107,43,.06), transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.cta-section h2 { font-family: var(--font-d); font-size: clamp(36px, 6vw, 68px); font-weight: 900; letter-spacing: -2px; line-height: 1.05; margin-bottom: 20px; position: relative; }
+.cta-section h2 span { color: var(--forge); }
+.cta-section p { color: var(--muted); font-size: 16px; margin-bottom: 40px; position: relative; }
+.cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+.footer-logo { font-family: var(--font-d); font-size: 18px; font-weight: 900; }
+.footer-logo span { color: var(--forge); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .2s; }
+.footer-links a:hover { color: var(--text); }
+.footer-copy { color: var(--muted2); font-size: 12px; font-family: var(--font-m); }
+
+/* ── MODAL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,.85); backdrop-filter: blur(10px); align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--bg2); border: 1px solid var(--border2); border-radius: 20px; padding: 40px; width: 90%; max-width: 480px; position: relative; }
+.modal-x { position: absolute; top: 16px; right: 16px; background: var(--bg3); border: 1px solid var(--border); color: var(--muted); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+.modal h3 { font-family: var(--font-d); font-size: 24px; font-weight: 900; letter-spacing: -.5px; margin-bottom: 6px; }
+.modal p { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+.modal-form { display: flex; flex-direction: column; gap: 14px; }
+.form-g label { display: block; font-family: var(--font-m); font-size: 10px; color: var(--muted); letter-spacing: .8px; margin-bottom: 8px; }
+.form-g input, .form-g select { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 8px; padding: 12px 14px; color: var(--text); font-family: var(--font-b); font-size: 14px; transition: border-color .2s; appearance: none; }
+.form-g input:focus, .form-g select:focus { outline: none; border-color: var(--forge); }
+.form-g input::placeholder { color: var(--muted2); }
+.modal-submit { background: var(--forge); color: #fff; border: none; border-radius: 10px; padding: 14px; font-family: var(--font-b); font-weight: 700; font-size: 14px; cursor: pointer; transition: all .2s; margin-top: 6px; }
+.modal-submit:hover { background: var(--forge2); }
+
+/* ── ANIM ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+.fade-up { opacity:0; transform:translateY(22px); transition: opacity .6s ease, transform .6s ease; }
+.fade-up.visible { opacity:1; transform:translateY(0); }
+
+@media(max-width:768px){
+  nav { padding: 12px 20px; } .nav-links{display:none;}
+  .panel-body{grid-template-columns:1fr;} .panel-right{border-top:1px solid var(--border);}
+  .steps{grid-template-columns:1fr;} .step{border-right:none;border-bottom:1px solid var(--border);}
+  .plans{grid-template-columns:1fr;}
+  footer{flex-direction:column;padding:28px 20px;}
+  .hero-stats{gap:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">
+    <div class="logo-icon">⚒</div>
+    Back<span>forge</span>
+  </div>
+  <div class="nav-links">
+    <a href="#builder">Builder</a>
+    <a href="#models">Quant Models</a>
+    <a href="#vs">Why Backforge</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <div class="nav-right">
+    <button class="nav-login">Sign in</button>
+    <button class="nav-cta" onclick="openModal()">Start Free →</button>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-lines"></div>
+  <div class="forge-glow"></div>
+  <div class="ice-glow"></div>
+  <div class="hero-eyebrow"><div class="live-dot"></div>NOW LIVE — FREE TO USE</div>
+  <h1>Forge Your<br><em>Trading Edge</em></h1>
+  <p class="hero-sub">Type any strategy in plain language. Get real backtests, institutional quant models, and actionable results — in seconds. No code. No Bloomberg terminal.</p>
+  <div class="hero-actions">
+    <button class="btn-forge" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">⚒ Start Forging Free</button>
+    <button class="btn-ghost" onclick="document.getElementById('vs').scrollIntoView({behavior:'smooth'})">Why Backforge?</button>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-n" id="s1">0</div><div class="stat-l">STRATEGIES FORGED</div></div>
+    <div class="stat"><div class="stat-n" id="s2">0</div><div class="stat-l">QUANT MODELS</div></div>
+    <div class="stat"><div class="stat-n" id="s3">0</div><div class="stat-l">GLOBAL TRADERS</div></div>
+    <div class="stat"><div class="stat-n" id="s4">0</div><div class="stat-l">MARKETS COVERED</div></div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section class="builder-section" id="builder">
+  <span class="s-tag">// STRATEGY FORGE</span>
+  <h2 class="s-title fade-up">From idea to backtest<br>in under 10 seconds</h2>
+  <p class="s-sub fade-up">No coding. No setup. Type your strategy, pick your market, hit Forge — real results from real data.</p>
+  <div class="forge-panel fade-up">
+    <div class="panel-topbar">
+      <div class="wdot" style="background:#ff5f57"></div>
+      <div class="wdot" style="background:#febc2e"></div>
+      <div class="wdot" style="background:#28c840"></div>
+      <span class="panel-name">backforge — strategy builder v1.0</span>
+      <span class="panel-badge">API LIVE</span>
+    </div>
+    <div class="panel-body">
+      <div class="panel-left">
+        <label class="inp-label">YOUR STRATEGY IDEA</label>
+        <textarea class="strat-area" id="stratInput" placeholder="e.g. Buy when RSI drops below 30 and price is above 200 MA. Sell when RSI crosses 70 or 2% stop loss...">Buy when RSI(14) drops below 30 and price is above 200-day MA. Sell when RSI crosses above 70 or 2% stop loss hits.</textarea>
+
+        <!-- SYMBOL SEARCH -->
+        <label class="inp-label">SEARCH SYMBOL</label>
+        <div style="position:relative;margin-bottom:10px">
+          <input type="text" id="symbolSearch" placeholder="Search XAUUSD, BTC, AAPL, NIFTY, EURUSD..." autocomplete="off"
+            style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px 10px 32px;color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .2s"
+            oninput="filterSymbols(this.value)" onfocus="showDropdown()" onblur="setTimeout(hideDropdown,200)">
+          <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:13px;opacity:.5">🔍</span>
+          <div id="symDropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:50;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;max-height:220px;overflow-y:auto;margin-top:4px"></div>
+        </div>
+        <div id="selectedSymbol" style="display:flex;align-items:center;gap:8px;background:var(--bg3);border:1px solid rgba(255,107,43,.3);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:13px">
+          <span style="color:var(--forge)">⚒</span>
+          <span id="selSymName" style="font-weight:600">BTC/USD</span>
+          <span id="selSymCat" style="color:var(--muted);font-family:var(--font-m);font-size:10px">CRYPTO</span>
+          <input type="hidden" id="symbolSel" value="BTC-USD|crypto">
+        </div>
+
+        <!-- TIMEFRAME -->
+        <label class="inp-label">TIMEFRAME</label>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px" id="tfGrid">
+          <button class="tf-btn" onclick="setTf('1m','1m',this)">1m</button>
+          <button class="tf-btn" onclick="setTf('5m','5m',this)">5m</button>
+          <button class="tf-btn" onclick="setTf('15m','15m',this)">15m</button>
+          <button class="tf-btn" onclick="setTf('30m','30m',this)">30m</button>
+          <button class="tf-btn active-tf" onclick="setTf('1h','1h',this)">1H</button>
+          <button class="tf-btn" onclick="setTf('2h','2h',this)">2H</button>
+          <button class="tf-btn" onclick="setTf('4h','4h',this)">4H</button>
+          <button class="tf-btn" onclick="setTf('1d','1d',this)">1D</button>
+          <button class="tf-btn" onclick="setTf('1wk','1wk',this)">1W</button>
+          <button class="tf-btn" onclick="setTf('1mo','1mo',this)">1M</button>
+        </div>
+        <input type="hidden" id="tfSel" value="1h">
+
+        <!-- PERIOD — manual input -->
+        <label class="inp-label">BACKTEST PERIOD</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">
+          <div>
+            <div style="font-family:var(--font-m);font-size:9px;color:var(--muted);margin-bottom:4px">YEARS</div>
+            <input type="number" id="periodY" min="0" max="20" value="5" placeholder="0–20"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 10px;color:var(--text);font-family:var(--font-b);font-size:13px;text-align:center"
+              oninput="updatePeriod()">
+          </div>
+          <div>
+            <div style="font-family:var(--font-m);font-size:9px;color:var(--muted);margin-bottom:4px">MONTHS</div>
+            <input type="number" id="periodM" min="0" max="11" value="0" placeholder="0–11"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 10px;color:var(--text);font-family:var(--font-b);font-size:13px;text-align:center"
+              oninput="updatePeriod()">
+          </div>
+          <div>
+            <div style="font-family:var(--font-m);font-size:9px;color:var(--muted);margin-bottom:4px">DAYS</div>
+            <input type="number" id="periodD" min="0" max="30" value="0" placeholder="0–30"
+              style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 10px;color:var(--text);font-family:var(--font-b);font-size:13px;text-align:center"
+              oninput="updatePeriod()">
+          </div>
+        </div>
+        <div style="font-family:var(--font-m);font-size:10px;color:var(--muted);margin-bottom:10px" id="periodDisplay">Period: 5 years</div>
+        <input type="hidden" id="periodSel" value="5y">
+
+        <!-- CAPITAL — manual input -->
+        <label class="inp-label">INITIAL CAPITAL</label>
+        <div style="position:relative;margin-bottom:14px">
+          <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px">₹</span>
+          <input type="number" id="capitalInput" value="100000" min="1000" placeholder="Enter amount..."
+            style="width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px 10px 28px;color:var(--text);font-family:var(--font-b);font-size:13px;transition:border-color .2s"
+            oninput="updateCapitalDisplay()">
+          <div style="position:absolute;right:0;top:0;bottom:0;display:flex;flex-direction:column">
+            <button onclick="adjustCapital(10000)" style="flex:1;background:var(--bg4);border:none;border-left:1px solid var(--border2);color:var(--muted);cursor:pointer;padding:0 10px;font-size:11px;border-radius:0 8px 0 0">▲</button>
+            <button onclick="adjustCapital(-10000)" style="flex:1;background:var(--bg4);border:none;border-left:1px solid var(--border2);border-top:1px solid var(--border2);color:var(--muted);cursor:pointer;padding:0 10px;font-size:11px;border-radius:0 0 8px 0">▼</button>
+          </div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap">
+          <button class="cap-preset" onclick="setCapital(10000)">₹10K</button>
+          <button class="cap-preset" onclick="setCapital(50000)">₹50K</button>
+          <button class="cap-preset" onclick="setCapital(100000)">₹1L</button>
+          <button class="cap-preset" onclick="setCapital(500000)">₹5L</button>
+          <button class="cap-preset" onclick="setCapital(1000000)">₹10L</button>
+          <button class="cap-preset" onclick="setCapital(5000000)">₹50L</button>
+        </div>
+        <div id="capitalDisplay" style="font-family:var(--font-m);font-size:10px;color:var(--muted);margin-bottom:14px">Capital: ₹1,00,000</div>
+
+        <button class="forge-btn" onclick="runBacktest()"><span id="forgeBtnTxt">⚒ Forge Backtest</span></button>
+        <div class="progress"><div class="progress-fill" id="progBar"></div></div>
+
+        <!-- AD SLOT — Replace with Google AdSense code after approval -->
+        <div id="adSlot" style="display:none;margin-top:12px">
+          <div style="font-family:var(--font-m);font-size:9px;color:var(--muted2);text-align:center;margin-bottom:4px;letter-spacing:.5px">ADVERTISEMENT</div>
+          <!-- PASTE YOUR GOOGLE ADSENSE CODE BELOW THIS LINE -->
+          <div id="adPlaceholder" style="background:var(--bg3);border:1px dashed var(--muted2);border-radius:8px;padding:14px;text-align:center;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+            <div style="font-size:11px;color:var(--muted);font-family:var(--font-m)">Ad space — 320×80</div>
+            <div style="font-size:10px;color:var(--muted2)">Powered by Google AdSense</div>
+          </div>
+          <!-- PASTE YOUR GOOGLE ADSENSE CODE ABOVE THIS LINE -->
+        </div>
+
+        <div class="api-status" id="apiStatus"></div>
+        <div class="code-out" id="codeOut">
+<span class="cm"># Auto-generated strategy code</span>
+<span class="kw">import</span> yfinance <span class="kw">as</span> yf
+<span class="kw">import</span> pandas_ta <span class="kw">as</span> ta
+
+<span class="kw">def</span> <span class="fn">rsi_ma_strategy</span>(df):
+    df[<span class="str">'rsi'</span>] = ta.rsi(df[<span class="str">'Close'</span>], length=14)
+    df[<span class="str">'ma200'</span>] = ta.sma(df[<span class="str">'Close'</span>], length=200)
+    buy = (df[<span class="str">'rsi'</span>] &lt; 30) &amp; (df[<span class="str">'Close'</span>] &gt; df[<span class="str">'ma200'</span>])
+    <span class="kw">return</span> buy
+        </div>
+      </div>
+      <div class="panel-right">
+        <label class="inp-label">BACKTEST RESULTS</label>
+        <div class="metrics-grid">
+          <div class="met"><div class="met-l">TOTAL RETURN</div><div class="met-v up" id="m-ret">+142.3%</div></div>
+          <div class="met"><div class="met-l">SHARPE RATIO</div><div class="met-v nt" id="m-sh">1.84</div></div>
+          <div class="met"><div class="met-l">MAX DRAWDOWN</div><div class="met-v dn" id="m-dd">-18.2%</div></div>
+          <div class="met"><div class="met-l">WIN RATE</div><div class="met-v up" id="m-wr">67.4%</div></div>
+          <div class="met"><div class="met-l">TOTAL TRADES</div><div class="met-v nt" id="m-tr">84</div></div>
+          <div class="met"><div class="met-l">PROFIT FACTOR</div><div class="met-v up" id="m-pf">2.31</div></div>
+        </div>
+        <div class="chart-box"><div class="chart-lbl">EQUITY CURVE</div><canvas id="miniChart"></canvas></div>
+        <label class="inp-label" style="margin-top:14px">APPLY QUANT MODEL</label>
+        <div class="qm-apply">
+          <button class="qm-btn" onclick="runModel('momentum',this)">📊 Momentum</button>
+          <button class="qm-btn" onclick="runModel('hmm',this)">🔀 Regime HMM</button>
+          <button class="qm-btn" onclick="runModel('zscore',this)">⚖️ Z-Score MR</button>
+          <button class="qm-btn" onclick="runModel('cvar',this)">🛡️ CVaR Risk</button>
+        </div>
+        <div class="model-result" id="modelResult"></div>
+        <div class="result-actions">
+          <button class="ra-btn ra-primary" onclick="exportReport()">Export Report →</button>
+          <button class="ra-btn ra-sec" onclick="openModal()">Save Strategy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUANT MODELS -->
+<section class="models-section" id="models">
+  <div class="models-inner">
+    <div class="models-header">
+      <div>
+        <span class="s-tag">// QUANT MODELS</span>
+        <h2 class="s-title fade-up" style="margin-bottom:0">10 Institutional<br>Quant Models</h2>
+      </div>
+      <p style="color:var(--muted);font-size:14px;max-width:320px;line-height:1.7">Built by professional quant analysts. One click to apply on any strategy.</p>
+    </div>
+    <div class="models-grid">
+      <div class="model-card fade-up">
+        <span class="mc-badge free">FREE</span>
+        <div class="mc-icon" style="background:rgba(0,229,160,.1)">📊</div>
+        <div class="mc-name">Momentum Factor</div>
+        <div class="mc-desc">Cross-sectional momentum scoring using 1/3/6/12 month returns. Ranks assets and signals long/short.</div>
+        <div class="mc-tags"><span class="mc-tag">Factor</span><span class="mc-tag">Long-Short</span><span class="mc-tag">Equity</span></div>
+      </div>
+      <div class="model-card fade-up">
+        <span class="mc-badge pro">PRO</span>
+        <div class="mc-icon" style="background:rgba(0,212,255,.1)">🔀</div>
+        <div class="mc-name">HMM Regime Detection</div>
+        <div class="mc-desc">Hidden Markov Model identifies Bull, Bear, Sideways regimes. Auto-adjusts position sizing per regime.</div>
+        <div class="mc-tags"><span class="mc-tag">Regime</span><span class="mc-tag">ML</span><span class="mc-tag">Risk</span></div>
+      </div>
+      <div class="model-card fade-up">
+        <span class="mc-badge pro">PRO</span>
+        <div class="mc-icon" style="background:rgba(255,107,43,.1)">🧠</div>
+        <div class="mc-name">LSTM Neural Net</div>
+        <div class="mc-desc">Deep learning trained on OHLCV data. Generates short-term price forecasts with probability distributions.</div>
+        <div class="mc-tags"><span class="mc-tag">Deep Learning</span><span class="mc-tag">Forecast</span></div>
+      </div>
+      <div class="model-card fade-up">
+        <span class="mc-badge free">FREE</span>
+        <div class="mc-icon" style="background:rgba(240,192,64,.1)">⚖️</div>
+        <div class="mc-name">Z-Score Mean Reversion</div>
+        <div class="mc-desc">Statistical arbitrage using cointegration and Z-score normalization. Pairs trading across correlated assets.</div>
+        <div class="mc-tags"><span class="mc-tag">Stat Arb</span><span class="mc-tag">Pairs</span><span class="mc-tag">Mean Rev</span></div>
+      </div>
+      <div class="model-card fade-up">
+        <span class="mc-badge pro">PRO</span>
+        <div class="mc-icon" style="background:rgba(248,113,113,.1)">🛡️</div>
+        <div class="mc-name">CVaR Risk Optimizer</div>
+        <div class="mc-desc">Conditional Value-at-Risk portfolio optimization. Minimizes tail risk, maximizes risk-adjusted returns via Monte Carlo.</div>
+        <div class="mc-tags"><span class="mc-tag">Risk</span><span class="mc-tag">Portfolio</span><span class="mc-tag">Monte Carlo</span></div>
+      </div>
+      <div class="model-card fade-up">
+        <span class="mc-badge pro">PRO</span>
+        <div class="mc-icon" style="background:rgba(0,229,160,.1)">🌊</div>
+        <div class="mc-name">Volatility Surface</div>
+        <div class="mc-desc">Options-implied vol modeling. Detects vol regime shifts, adjusts entry/exit timing via VIX term structure.</div>
+        <div class="mc-tags"><span class="mc-tag">Vol</span><span class="mc-tag">Options</span><span class="mc-tag">Timing</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section">
+  <span class="s-tag">// HOW IT WORKS</span>
+  <h2 class="s-title fade-up">Three steps to<br>your edge</h2>
+  <div class="steps">
+    <div class="step fade-up">
+      <div class="step-n">01 —</div>
+      <div class="step-icon">💡</div>
+      <div class="step-t">Enter your idea</div>
+      <div class="step-d">Type your trading logic in plain English. RSI, MACD, Bollinger Bands, Moving Averages — all understood automatically.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-n">02 —</div>
+      <div class="step-icon">⚒</div>
+      <div class="step-t">Forge the backtest</div>
+      <div class="step-d">Real data auto-fetched from global markets. Sharpe, drawdown, equity curve — all in seconds. Zero setup required.</div>
+    </div>
+    <div class="step fade-up">
+      <div class="step-n">03 —</div>
+      <div class="step-icon">🚀</div>
+      <div class="step-t">Apply quant models</div>
+      <div class="step-d">One click runs institutional ML models on your strategy — regime detection, risk optimization, factor scoring.</div>
+    </div>
+  </div>
+</section>
+
+<!-- VS SECTION -->
+<section class="vs-section" id="vs">
+  <div class="vs-inner">
+    <span class="s-tag">// WHY BACKFORGE</span>
+    <h2 class="s-title fade-up">How we compare</h2>
+    <table class="vs-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th class="ours">Backforge ⚒</th>
+          <th>Quantora</th>
+          <th>QuantConnect</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="feat">Real market data</td><td class="yes ours-col">✓ yFinance live</td><td class="no">Simulation only</td><td class="yes">✓ Paid plans</td></tr>
+        <tr><td class="feat">No-code strategy input</td><td class="yes ours-col">✓ Plain English</td><td class="yes">✓ AI text</td><td class="no">Code required</td></tr>
+        <tr><td class="feat">Indian NSE data</td><td class="yes ours-col">✓ Full coverage</td><td class="no">Limited</td><td class="no">Not available</td></tr>
+        <tr><td class="feat">Quant ML models</td><td class="yes ours-col">✓ 10 models</td><td class="no">None</td><td class="no">Manual setup</td></tr>
+        <tr><td class="feat">Free tier</td><td class="yes ours-col">✓ Always free</td><td class="no">Alpha only</td><td class="yes">✓ Limited</td></tr>
+        <tr><td class="feat">Setup time</td><td class="yes ours-col">0 seconds</td><td class="no">Account needed</td><td class="no">Hours</td></tr>
+        <tr><td class="feat">Export reports</td><td class="yes ours-col">✓ HTML/PDF</td><td class="no">No</td><td class="yes">✓ Paid</td></tr>
+        <tr><td class="feat">Crypto + Forex</td><td class="yes ours-col">✓ All 4 markets</td><td class="no">Stocks only</td><td class="yes">✓ Paid</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="pricing">
+  <span class="s-tag">// PRICING</span>
+  <h2 class="s-title fade-up">Start free. Scale when ready.</h2>
+  <p style="color:var(--muted);margin-bottom:0">No credit card. No hidden fees. Cancel anytime.</p>
+  <div class="plans">
+    <div class="plan fade-up">
+      <div class="plan-tier">STARTER</div>
+      <div class="plan-price">Free</div>
+      <div class="plan-note">Forever free</div>
+      <ul class="plan-feats">
+        <li>5 backtests per day</li>
+        <li>3 quant models</li>
+        <li>1 year historical data</li>
+        <li>HTML report export</li>
+        <li class="off">Advanced ML models</li>
+        <li class="off">Live alerts</li>
+        <li class="off">API access</li>
+      </ul>
+      <button class="plan-btn out" onclick="openModal()">Get started free</button>
+    </div>
+    <div class="plan feat fade-up">
+      <div class="plan-badge">MOST POPULAR</div>
+      <div class="plan-tier">PRO</div>
+      <div class="plan-price">₹999<sub>/mo</sub></div>
+      <div class="plan-note">Billed monthly</div>
+      <ul class="plan-feats">
+        <li>Unlimited backtests</li>
+        <li>All 10 quant models</li>
+        <li>10 year historical data</li>
+        <li>PDF + Excel export</li>
+        <li>Advanced ML models</li>
+        <li>Live strategy alerts</li>
+        <li class="off">API access</li>
+      </ul>
+      <button class="plan-btn fill" onclick="openModal()">Start Pro free trial</button>
+    </div>
+    <div class="plan fade-up">
+      <div class="plan-tier">INSTITUTIONAL</div>
+      <div class="plan-price">₹4,999<sub>/mo</sub></div>
+      <div class="plan-note">For funds & teams</div>
+      <ul class="plan-feats">
+        <li>Everything in Pro</li>
+        <li>Full REST API</li>
+        <li>White-label option</li>
+        <li>Custom quant models</li>
+        <li>5 team seats</li>
+        <li>Priority data feeds</li>
+        <li>Dedicated support</li>
+      </ul>
+      <button class="plan-btn out" onclick="openModal()">Contact us</button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <h2>Ready to <span>forge</span><br>your edge?</h2>
+  <p>Join thousands of traders using institutional quant tools — completely free.</p>
+  <div class="cta-actions">
+    <button class="btn-forge" onclick="openModal()">⚒ Start Forging Free →</button>
+    <button class="btn-ghost" onclick="document.getElementById('builder').scrollIntoView({behavior:'smooth'})">Try the Demo</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Back<span>forge</span></div>
+  <div class="footer-links">
+    <a href="#">About</a><a href="#">Blog</a><a href="#">API Docs</a>
+    <a href="privacy.html" target="_blank">Privacy Policy</a>
+    <a href="#">Terms</a><a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Backforge · backforge.io</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-x" onclick="closeModal()">✕</button>
+    <h3>Start forging free</h3>
+    <p>Create your account and run your first backtest in 60 seconds.</p>
+    <div class="modal-form">
+      <div class="form-g"><label>FULL NAME</label><input type="text" placeholder="Your name"></div>
+      <div class="form-g"><label>EMAIL ADDRESS</label><input type="email" placeholder="you@example.com"></div>
+      <div class="form-g"><label>I AM A</label>
+        <select><option>Retail Trader</option><option>Professional Trader</option><option>Quant Analyst</option><option>Fund Manager</option><option>Student / Learning</option></select>
+      </div>
+      <button class="modal-submit" onclick="closeModal()">Create Free Account →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:8000';
+
+const SYMBOLS = [
+  {s:'EURUSD=X',n:'EUR/USD',cat:'FOREX',mkt:'forex'},{s:'GBPUSD=X',n:'GBP/USD',cat:'FOREX',mkt:'forex'},
+  {s:'USDJPY=X',n:'USD/JPY',cat:'FOREX',mkt:'forex'},{s:'USDCHF=X',n:'USD/CHF',cat:'FOREX',mkt:'forex'},
+  {s:'AUDUSD=X',n:'AUD/USD',cat:'FOREX',mkt:'forex'},{s:'USDCAD=X',n:'USD/CAD',cat:'FOREX',mkt:'forex'},
+  {s:'NZDUSD=X',n:'NZD/USD',cat:'FOREX',mkt:'forex'},{s:'USDINR=X',n:'USD/INR',cat:'FOREX',mkt:'forex'},
+  {s:'EURGBP=X',n:'EUR/GBP',cat:'FOREX',mkt:'forex'},{s:'EURJPY=X',n:'EUR/JPY',cat:'FOREX',mkt:'forex'},
+  {s:'GBPJPY=X',n:'GBP/JPY',cat:'FOREX',mkt:'forex'},{s:'EURCHF=X',n:'EUR/CHF',cat:'FOREX',mkt:'forex'},
+  {s:'GBPCHF=X',n:'GBP/CHF',cat:'FOREX',mkt:'forex'},{s:'AUDJPY=X',n:'AUD/JPY',cat:'FOREX',mkt:'forex'},
+  {s:'CADJPY=X',n:'CAD/JPY',cat:'FOREX',mkt:'forex'},{s:'CHFJPY=X',n:'CHF/JPY',cat:'FOREX',mkt:'forex'},
+  {s:'EURAUD=X',n:'EUR/AUD',cat:'FOREX',mkt:'forex'},{s:'EURCAD=X',n:'EUR/CAD',cat:'FOREX',mkt:'forex'},
+  {s:'EURNZD=X',n:'EUR/NZD',cat:'FOREX',mkt:'forex'},{s:'GBPAUD=X',n:'GBP/AUD',cat:'FOREX',mkt:'forex'},
+  {s:'GBPCAD=X',n:'GBP/CAD',cat:'FOREX',mkt:'forex'},{s:'GBPNZD=X',n:'GBP/NZD',cat:'FOREX',mkt:'forex'},
+  {s:'AUDCAD=X',n:'AUD/CAD',cat:'FOREX',mkt:'forex'},{s:'AUDCHF=X',n:'AUD/CHF',cat:'FOREX',mkt:'forex'},
+  {s:'AUDNZD=X',n:'AUD/NZD',cat:'FOREX',mkt:'forex'},{s:'NZDCHF=X',n:'NZD/CHF',cat:'FOREX',mkt:'forex'},
+  {s:'NZDJPY=X',n:'NZD/JPY',cat:'FOREX',mkt:'forex'},{s:'NZDCAD=X',n:'NZD/CAD',cat:'FOREX',mkt:'forex'},
+  {s:'USDSGD=X',n:'USD/SGD',cat:'FOREX',mkt:'forex'},{s:'USDHKD=X',n:'USD/HKD',cat:'FOREX',mkt:'forex'},
+  {s:'USDMXN=X',n:'USD/MXN',cat:'FOREX',mkt:'forex'},{s:'USDZAR=X',n:'USD/ZAR',cat:'FOREX',mkt:'forex'},
+  {s:'USDNOK=X',n:'USD/NOK',cat:'FOREX',mkt:'forex'},{s:'USDSEK=X',n:'USD/SEK',cat:'FOREX',mkt:'forex'},
+  {s:'USDTRY=X',n:'USD/TRY',cat:'FOREX',mkt:'forex'},{s:'USDCNH=X',n:'USD/CNH',cat:'FOREX',mkt:'forex'},
+  {s:'GC=F',n:'XAUUSD - Gold',cat:'METALS',mkt:'forex'},{s:'SI=F',n:'XAGUSD - Silver',cat:'METALS',mkt:'forex'},
+  {s:'PL=F',n:'Platinum',cat:'METALS',mkt:'forex'},{s:'PA=F',n:'Palladium',cat:'METALS',mkt:'forex'},
+  {s:'CL=F',n:'Crude Oil WTI',cat:'COMMODITIES',mkt:'forex'},{s:'BZ=F',n:'Brent Crude',cat:'COMMODITIES',mkt:'forex'},
+  {s:'NG=F',n:'Natural Gas',cat:'COMMODITIES',mkt:'forex'},{s:'HG=F',n:'Copper',cat:'COMMODITIES',mkt:'forex'},
+  {s:'ZW=F',n:'Wheat',cat:'COMMODITIES',mkt:'forex'},{s:'ZC=F',n:'Corn',cat:'COMMODITIES',mkt:'forex'},
+  {s:'BTC-USD',n:'BTC/USD',cat:'CRYPTO',mkt:'crypto'},{s:'ETH-USD',n:'ETH/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'BNB-USD',n:'BNB/USD',cat:'CRYPTO',mkt:'crypto'},{s:'SOL-USD',n:'SOL/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'XRP-USD',n:'XRP/USD',cat:'CRYPTO',mkt:'crypto'},{s:'ADA-USD',n:'ADA/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'AVAX-USD',n:'AVAX/USD',cat:'CRYPTO',mkt:'crypto'},{s:'DOGE-USD',n:'DOGE/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'DOT-USD',n:'DOT/USD',cat:'CRYPTO',mkt:'crypto'},{s:'MATIC-USD',n:'MATIC/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'LINK-USD',n:'LINK/USD',cat:'CRYPTO',mkt:'crypto'},{s:'LTC-USD',n:'LTC/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'ATOM-USD',n:'ATOM/USD',cat:'CRYPTO',mkt:'crypto'},{s:'UNI-USD',n:'UNI/USD',cat:'CRYPTO',mkt:'crypto'},
+  {s:'AAPL',n:'Apple',cat:'US STOCK',mkt:'us'},{s:'MSFT',n:'Microsoft',cat:'US STOCK',mkt:'us'},
+  {s:'GOOGL',n:'Alphabet (Google)',cat:'US STOCK',mkt:'us'},{s:'AMZN',n:'Amazon',cat:'US STOCK',mkt:'us'},
+  {s:'META',n:'Meta (Facebook)',cat:'US STOCK',mkt:'us'},{s:'TSLA',n:'Tesla',cat:'US STOCK',mkt:'us'},
+  {s:'NVDA',n:'NVIDIA',cat:'US STOCK',mkt:'us'},{s:'NFLX',n:'Netflix',cat:'US STOCK',mkt:'us'},
+  {s:'AMD',n:'AMD',cat:'US STOCK',mkt:'us'},{s:'INTC',n:'Intel',cat:'US STOCK',mkt:'us'},
+  {s:'CRM',n:'Salesforce',cat:'US STOCK',mkt:'us'},{s:'ADBE',n:'Adobe',cat:'US STOCK',mkt:'us'},
+  {s:'PYPL',n:'PayPal',cat:'US STOCK',mkt:'us'},{s:'UBER',n:'Uber',cat:'US STOCK',mkt:'us'},
+  {s:'SHOP',n:'Shopify',cat:'US STOCK',mkt:'us'},{s:'JPM',n:'JPMorgan Chase',cat:'US STOCK',mkt:'us'},
+  {s:'BAC',n:'Bank of America',cat:'US STOCK',mkt:'us'},{s:'GS',n:'Goldman Sachs',cat:'US STOCK',mkt:'us'},
+  {s:'V',n:'Visa',cat:'US STOCK',mkt:'us'},{s:'MA',n:'Mastercard',cat:'US STOCK',mkt:'us'},
+  {s:'WMT',n:'Walmart',cat:'US STOCK',mkt:'us'},{s:'KO',n:'Coca-Cola',cat:'US STOCK',mkt:'us'},
+  {s:'DIS',n:'Disney',cat:'US STOCK',mkt:'us'},{s:'BA',n:'Boeing',cat:'US STOCK',mkt:'us'},
+  {s:'XOM',n:'ExxonMobil',cat:'US STOCK',mkt:'us'},{s:'PFE',n:'Pfizer',cat:'US STOCK',mkt:'us'},
+  {s:'JNJ',n:'Johnson & Johnson',cat:'US STOCK',mkt:'us'},{s:'NFLX',n:'Netflix',cat:'US STOCK',mkt:'us'},
+  {s:'SPY',n:'S&P 500 ETF',cat:'US ETF',mkt:'us'},{s:'QQQ',n:'Nasdaq 100 ETF',cat:'US ETF',mkt:'us'},
+  {s:'DIA',n:'Dow Jones ETF',cat:'US ETF',mkt:'us'},{s:'IWM',n:'Russell 2000 ETF',cat:'US ETF',mkt:'us'},
+  {s:'GLD',n:'Gold ETF',cat:'US ETF',mkt:'us'},
+  {s:'RELIANCE.NS',n:'Reliance Industries',cat:'NSE',mkt:'indian'},{s:'TCS.NS',n:'TCS',cat:'NSE',mkt:'indian'},
+  {s:'HDFCBANK.NS',n:'HDFC Bank',cat:'NSE',mkt:'indian'},{s:'INFY.NS',n:'Infosys',cat:'NSE',mkt:'indian'},
+  {s:'ICICIBANK.NS',n:'ICICI Bank',cat:'NSE',mkt:'indian'},{s:'SBIN.NS',n:'SBI',cat:'NSE',mkt:'indian'},
+  {s:'BAJFINANCE.NS',n:'Bajaj Finance',cat:'NSE',mkt:'indian'},{s:'BHARTIARTL.NS',n:'Airtel',cat:'NSE',mkt:'indian'},
+  {s:'KOTAKBANK.NS',n:'Kotak Bank',cat:'NSE',mkt:'indian'},{s:'LT.NS',n:'L&T',cat:'NSE',mkt:'indian'},
+  {s:'ITC.NS',n:'ITC',cat:'NSE',mkt:'indian'},{s:'AXISBANK.NS',n:'Axis Bank',cat:'NSE',mkt:'indian'},
+  {s:'MARUTI.NS',n:'Maruti Suzuki',cat:'NSE',mkt:'indian'},{s:'TATAMOTORS.NS',n:'Tata Motors',cat:'NSE',mkt:'indian'},
+  {s:'WIPRO.NS',n:'Wipro',cat:'NSE',mkt:'indian'},{s:'HCLTECH.NS',n:'HCL Tech',cat:'NSE',mkt:'indian'},
+  {s:'SUNPHARMA.NS',n:'Sun Pharma',cat:'NSE',mkt:'indian'},{s:'TATASTEEL.NS',n:'Tata Steel',cat:'NSE',mkt:'indian'},
+  {s:'ADANIENT.NS',n:'Adani Enterprises',cat:'NSE',mkt:'indian'},{s:'TITAN.NS',n:'Titan',cat:'NSE',mkt:'indian'},
+  {s:'ULTRACEMCO.NS',n:'UltraTech Cement',cat:'NSE',mkt:'indian'},{s:'NTPC.NS',n:'NTPC',cat:'NSE',mkt:'indian'},
+  {s:'ONGC.NS',n:'ONGC',cat:'NSE',mkt:'indian'},{s:'ASIANPAINT.NS',n:'Asian Paints',cat:'NSE',mkt:'indian'},
+  {s:'NIFTY50=F',n:'NIFTY 50',cat:'NSE INDEX',mkt:'indian'},{s:'BANKNIFTY=F',n:'BANK NIFTY',cat:'NSE INDEX',mkt:'indian'},
+  {s:'^NSEI',n:'NIFTY 50 Index',cat:'NSE INDEX',mkt:'indian'},{s:'^BSESN',n:'SENSEX',cat:'NSE INDEX',mkt:'indian'},
+];
+
+let currentSym={s:'BTC-USD',n:'BTC/USD',cat:'CRYPTO',mkt:'crypto'};
+
+function filterSymbols(q){
+  if(!q.trim()){hideDropdown();return;}
+  const matches=SYMBOLS.filter(x=>x.s.toLowerCase().includes(q.toLowerCase())||x.n.toLowerCase().includes(q.toLowerCase())||x.cat.toLowerCase().includes(q.toLowerCase())).slice(0,12);
+  const dd=document.getElementById('symDropdown');
+  if(!matches.length){dd.innerHTML='<div style="padding:12px;color:var(--muted);font-size:12px;text-align:center">No results — type exact symbol (e.g. MSFT)</div>';dd.style.display='block';return;}
+  dd.innerHTML=matches.map(x=>`<div class="sym-item" onmousedown="selectSym('${x.s}','${x.n}','${x.cat}','${x.mkt}')"><span>${x.n} <span style="color:var(--muted);font-size:11px">${x.s}</span></span><span class="sym-cat">${x.cat}</span></div>`).join('');
+  dd.style.display='block';
+}
+function selectSym(s,n,cat,mkt){
+  currentSym={s,n,cat,mkt};
+  document.getElementById('symbolSel').value=s+'|'+mkt;
+  document.getElementById('selSymName').textContent=n;
+  document.getElementById('selSymCat').textContent=cat;
+  document.getElementById('symbolSearch').value='';
+  hideDropdown();
+}
+function showDropdown(){const q=document.getElementById('symbolSearch').value;if(q.trim())filterSymbols(q);}
+function hideDropdown(){document.getElementById('symDropdown').style.display='none';}
+
+function setTf(val,label,btn){
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active-tf'));
+  btn.classList.add('active-tf');
+  document.getElementById('tfSel').value=val;
+}
+
+function updatePeriod(){
+  const y=parseInt(document.getElementById('periodY').value)||0;
+  const m=parseInt(document.getElementById('periodM').value)||0;
+  const d=parseInt(document.getElementById('periodD').value)||0;
+  let parts=[];
+  if(y>0)parts.push(y+' year'+(y>1?'s':''));
+  if(m>0)parts.push(m+' month'+(m>1?'s':''));
+  if(d>0)parts.push(d+' day'+(d>1?'s':''));
+  document.getElementById('periodDisplay').textContent='Period: '+(parts.length?parts.join(', '):'Not set');
+  const totalDays=y*365+m*30+d;
+  let pStr;
+  if(totalDays<=30)pStr='1mo';
+  else if(totalDays<=90)pStr='3mo';
+  else if(totalDays<=180)pStr='6mo';
+  else if(totalDays<=365)pStr='1y';
+  else if(totalDays<=730)pStr='2y';
+  else if(totalDays<=1825)pStr='5y';
+  else pStr='10y';
+  document.getElementById('periodSel').value=pStr;
+}
+
+function updateCapitalDisplay(){
+  const v=parseFloat(document.getElementById('capitalInput').value)||0;
+  document.getElementById('capitalDisplay').textContent='Capital: \u20b9'+v.toLocaleString('en-IN');
+}
+function setCapital(v){document.getElementById('capitalInput').value=v;updateCapitalDisplay();}
+function adjustCapital(by){const inp=document.getElementById('capitalInput');inp.value=Math.max(1000,(parseFloat(inp.value)||0)+by);updateCapitalDisplay();}
+
+const tickers=[
+  {sym:'NIFTY',val:'22,450',chg:'+1.2%',up:true},{sym:'XAUUSD',val:'$2,341',chg:'+0.8%',up:true},
+  {sym:'BTC/USD',val:'$67,240',chg:'+2.8%',up:true},{sym:'RELIANCE',val:'\u20b92,841',chg:'-0.4%',up:false},
+  {sym:'AAPL',val:'$189.50',chg:'+0.9%',up:true},{sym:'ETH/USD',val:'$3,510',chg:'+3.1%',up:true},
+  {sym:'EUR/USD',val:'1.0842',chg:'-0.1%',up:false},{sym:'TSLA',val:'$178.20',chg:'+1.8%',up:true},
+  {sym:'CRUDE OIL',val:'$82.10',chg:'-0.8%',up:false},{sym:'SOL/USD',val:'$142.30',chg:'+4.2%',up:true},
+  {sym:'GBP/USD',val:'1.2710',chg:'+0.2%',up:true},{sym:'NVDA',val:'$875.40',chg:'+3.4%',up:true},
+];
+document.getElementById('ticker').innerHTML=[...tickers,...tickers].map(x=>`<div class="ti"><span class="sym">${x.sym}</span><span>${x.val}</span><span class="${x.up?'up':'dn'}">${x.chg}</span></div>`).join('');
+
+function animCount(id,to,sfx='',dur=1800){const el=document.getElementById(id);let s=0,step=to/(dur/16);const t=setInterval(()=>{s=Math.min(s+step,to);el.textContent=Math.floor(s).toLocaleString()+sfx;if(s>=to)clearInterval(t);},16);}
+setTimeout(()=>{animCount('s1',12480,'+');animCount('s2',10,'');animCount('s3',3200,'+');animCount('s4',15,'');},600);
+
+function drawChart(data){
+  const cv=document.getElementById('miniChart');if(!cv||!data.length)return;
+  const ctx=cv.getContext('2d');cv.width=cv.offsetWidth*2;cv.height=cv.offsetHeight*2;ctx.scale(2,2);
+  const w=cv.offsetWidth,h=cv.offsetHeight;const vals=data.map(d=>typeof d==='object'?d.value:d);
+  const mn=Math.min(...vals),mx=Math.max(...vals),pad=4;ctx.clearRect(0,0,w,h);
+  const col=vals[vals.length-1]>=vals[0]?'#00e5a0':'#f87171';
+  ctx.beginPath();vals.forEach((v,i)=>{const x=pad+(i/(vals.length-1))*(w-pad*2),y=h-pad-((v-mn)/(mx-mn||1))*(h-pad*2);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.lineTo(w-pad,h-pad);ctx.lineTo(pad,h-pad);ctx.closePath();
+  const g=ctx.createLinearGradient(0,0,0,h);g.addColorStop(0,col+'33');g.addColorStop(1,col+'00');ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();vals.forEach((v,i)=>{const x=pad+(i/(vals.length-1))*(w-pad*2),y=h-pad-((v-mn)/(mx-mn||1))*(h-pad*2);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.strokeStyle=col;ctx.lineWidth=1.5;ctx.stroke();
+}
+function demoChart(){let v=100,d=[v];for(let i=0;i<59;i++){v*=(1+(Math.random()*.05-.015));d.push(Math.max(v,70));}drawChart(d);}
+setTimeout(demoChart,300);
+
+function showStatus(msg,type='info'){const el=document.getElementById('apiStatus');el.style.display='block';el.className='api-status st-'+type;el.textContent=msg;}
+function hideStatus(){document.getElementById('apiStatus').style.display='none';}
+
+function updateCode(sym,txt){
+  const inds=[];
+  if(/rsi/i.test(txt))inds.push(`df['rsi'] = ta.rsi(df['Close'], length=14)`);
+  if(/ma|moving/i.test(txt))inds.push(`df['ma200'] = ta.sma(df['Close'], length=200)`);
+  if(/macd/i.test(txt))inds.push(`df['macd'] = ta.macd(df['Close'])['MACD_12_26_9']`);
+  if(!inds.length)inds.push(`df['rsi'] = ta.rsi(df['Close'], length=14)`);
+  document.getElementById('codeOut').innerHTML=`<span class="cm"># ${sym} strategy</span>\nimport yfinance as yf\nimport pandas_ta as ta\ndf = yf.download("${sym}")\n`+inds.join('\n')+`\n<span class="cm"># ${txt.substring(0,55)}...</span>`;
+}
+
+function startProg(){const b=document.getElementById('progBar');b.style.width='0%';let p=0;const iv=setInterval(()=>{p+=Math.random()*8;if(p>=88){clearInterval(iv);return;}b.style.width=p+'%';},120);return iv;}
+function endProg(){document.getElementById('progBar').style.width='100%';setTimeout(()=>document.getElementById('progBar').style.width='0%',800);}
+
+let running=false,lastResult=null;
+async function runBacktest(){
+  if(running)return;running=true;
+  const btn=document.getElementById('forgeBtnTxt');
+  const symRaw=document.getElementById('symbolSel').value;
+  const[symbol,market]=symRaw.split('|');
+  const tf=document.getElementById('tfSel').value;
+  const period=document.getElementById('periodSel').value;
+  const capital=parseFloat(document.getElementById('capitalInput').value)||100000;
+  const strat=document.getElementById('stratInput').value.trim();
+  if(!strat){showStatus('Please enter a strategy idea!','err');running=false;return;}
+  btn.textContent='Fetching data...';
+  // Show ad when user clicks Forge
+  document.getElementById('adSlot').style.display='block';
+  showStatus(`Connecting to ${symbol} | ${tf} | ${period}`,'info');
+  updateCode(symbol,strat);
+  const iv=startProg();
+  try{
+    const res=await fetch(`${API}/api/backtest`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({strategy_text:strat,symbol,market,timeframe:tf,period,initial_capital:capital})});
+    clearInterval(iv);
+    if(!res.ok){const e=await res.json();throw new Error(e.detail||'API error');}
+    const data=await res.json();lastResult=data.result;const s=data.result.summary;
+    const sg=s.total_return>=0?'+':'';
+    document.getElementById('m-ret').textContent=sg+s.total_return+'%';
+    document.getElementById('m-ret').className='met-v '+(s.total_return>=0?'up':'dn');
+    document.getElementById('m-sh').textContent=s.sharpe_ratio;
+    document.getElementById('m-dd').textContent=s.max_drawdown+'%';
+    document.getElementById('m-wr').textContent=s.win_rate+'%';
+    document.getElementById('m-tr').textContent=s.total_trades;
+    document.getElementById('m-pf').textContent=s.profit_factor;
+    drawChart(data.result.equity_curve);endProg();
+    showStatus(`Done! Final: \u20b9${s.final_value.toLocaleString('en-IN',{maximumFractionDigits:0})} | ${s.total_trades} trades`,'ok');
+  }catch(e){
+    clearInterval(iv);endProg();
+    const dm=[{r:'+142.3%',sh:'1.84',dd:'-18.2%',wr:'67.4%',tr:'84',pf:'2.31'},{r:'+89.1%',sh:'1.42',dd:'-22.7%',wr:'58.2%',tr:'127',pf:'1.87'}];
+    const d=dm[Math.floor(Math.random()*dm.length)];
+    document.getElementById('m-ret').textContent=d.r;document.getElementById('m-sh').textContent=d.sh;
+    document.getElementById('m-dd').textContent=d.dd;document.getElementById('m-wr').textContent=d.wr;
+    document.getElementById('m-tr').textContent=d.tr;document.getElementById('m-pf').textContent=d.pf;
+    demoChart();showStatus('Backend offline — demo mode. Start: python main.py','err');
+  }
+  btn.textContent='\u2692 Forge Backtest';running=false;
+}
+
+async function runModel(name,el){
+  document.querySelectorAll('.qm-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const[symbol,market]=document.getElementById('symbolSel').value.split('|');
+  const period=document.getElementById('periodSel').value;
+  const box=document.getElementById('modelResult');
+  box.style.display='block';box.innerHTML=`<span style="color:var(--ice)">Running ${name} on ${symbol}...</span>`;
+  try{
+    const res=await fetch(`${API}/api/quant-model`,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({symbol,market,model_name:name,period})});
+    if(!res.ok)throw new Error();
+    const data=await res.json();const r=data.result;
+    let html=`<div style="color:var(--forge);font-weight:700;margin-bottom:8px;font-size:13px">${r.model}</div>`;
+    if(r.signal){const sc=r.signal.includes('BUY')?'var(--green)':r.signal.includes('SELL')?'#f87171':'var(--ice)';
+      html+=`<div style="margin-bottom:4px">Signal: <span style="color:${sc};font-weight:700">${r.signal}</span></div>`;
+      if(r.label)html+=`<div style="color:var(--muted);font-size:12px;margin-bottom:8px">${r.label}</div>`;}
+    if(r.regime){const rc=r.color==='green'?'var(--green)':r.color==='red'?'#f87171':'var(--gold)';
+      html+=`<div>Regime: <span style="color:${rc};font-weight:700">${r.regime}</span></div>`;
+      html+=`<div style="color:var(--muted);font-size:12px;margin-bottom:8px">${r.advice}</div>`;}
+    if(r.risk_level){const rc=r.risk_level==='LOW'?'var(--green)':r.risk_level==='HIGH'?'#f87171':'var(--gold)';
+      html+=`<div>Risk: <span style="color:${rc};font-weight:700">${r.risk_level}</span></div>`;
+      html+=`<div style="color:var(--muted);font-size:12px;margin-bottom:8px">${r.advice}</div>`;}
+    if(r.details){html+=`<div style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px">`;
+      Object.entries(r.details).forEach(([k,v])=>{const l=k.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+        html+=`<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="color:var(--muted)">${l}</span><span>${v}</span></div>`;});html+=`</div>`;}
+    box.innerHTML=html;
+  }catch(e){box.innerHTML=`<span style="color:#f87171">Backend offline. Run: python main.py</span>`;}
+}
+
+function exportReport(){
+  if(!lastResult){showStatus('Run a backtest first!','err');return;}
+  const s=lastResult.summary,sym=currentSym.n,now=new Date().toLocaleDateString('en-IN');
+  const html=`<!DOCTYPE html><html><head><title>Backforge - ${sym}</title><style>body{font-family:Arial,sans-serif;max-width:700px;margin:40px auto;padding:0 20px}h1{color:#ff6b2b}table{width:100%;border-collapse:collapse}td,th{padding:10px 14px;border-bottom:1px solid #eee}th{background:#f5f5f5;font-size:12px;color:#888}.up{color:#00b37a;font-weight:700}.dn{color:#e53935;font-weight:700}</style></head><body><h1>Backforge Report</h1><p><b>${sym}</b> | ${now}</p><table><tr><th>METRIC</th><th>VALUE</th></tr><tr><td>Total Return</td><td class="${s.total_return>=0?'up':'dn'}">${s.total_return>=0?'+':''}${s.total_return}%</td></tr><tr><td>Sharpe Ratio</td><td>${s.sharpe_ratio}</td></tr><tr><td>Max Drawdown</td><td class="dn">${s.max_drawdown}%</td></tr><tr><td>Win Rate</td><td>${s.win_rate}%</td></tr><tr><td>Trades</td><td>${s.total_trades}</td></tr><tr><td>Profit Factor</td><td>${s.profit_factor}</td></tr><tr><td>Final Value</td><td class="${s.final_value>=s.initial_capital?'up':'dn'}">\u20b9${s.final_value.toLocaleString('en-IN',{maximumFractionDigits:0})}</td></tr></table><p style="color:#aaa;font-size:12px;margin-top:24px;text-align:center">Backforge - backforge.io</p></body></html>`;
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  a.download=`Backforge_${sym.replace(/\//g,'-')}_${now.replace(/\//g,'-')}.html`;a.click();
+  showStatus('Report downloaded!','ok');
+}
+
+function openModal(){document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden';}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.12});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+window.addEventListener('resize',demoChart);
+
+window.addEventListener('load',async()=>{
+  updateCapitalDisplay();
+  try{const res=await fetch(`${API}/`,{signal:AbortSignal.timeout(3000)});
+    if(res.ok){showStatus('Backforge API connected!','ok');setTimeout(hideStatus,4000);}
+  }catch(e){showStatus('Backend offline. Start: python main.py then refresh.','err');}
+});
+</script>
+</body>
+</html>
